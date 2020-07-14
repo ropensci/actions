@@ -19,21 +19,26 @@ echo 'R_COMPILE_AND_INSTALL_PACKAGES=never' >> ~/.Renviron
 
 # Get the package
 git clone --depth 1 "$1"
-PKG=$(basename $1)
-VERSION=$(grep '^Version:' "${PKG}/DESCRIPTION" | sed 's/^Version://')
+REPO=$(basename $1)
+COMMIT_TIMESTAMP="$(git --git-dir=${REPO}/.git log -1 --format=%ct)"
+PACKAGE=$(grep '^Package:' "${REPO}/DESCRIPTION" | sed 's/^Package://')
+VERSION=$(grep '^Version:' "${REPO}/DESCRIPTION" | sed 's/^Version://')
+PACKAGE=$(echo -n "${PACKAGE//[[:space:]]/}")
 VERSION=$(echo -n "${VERSION//[[:space:]]/}")
-PKG_VERSION="${PKG}_${VERSION}"
-PKG_SOURCE="${PKG_VERSION}.tar.gz"
-PKG_BINARY="${PKG_VERSION}_R_x86_64-pc-linux-gnu.tar.gz"
+PKG_VERSION="${PACKAGE}_${VERSION}"
+SOURCEPKG="${PKG_VERSION}.tar.gz"
+BINARYPKG="${PKG_VERSION}_R_x86_64-pc-linux-gnu.tar.gz"
 
 # Get dependencies
 Rscript -e "install.packages('remotes')"
-Rscript -e "setwd('$PKG'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
+Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
 
 # Build source package
-rm -Rf ${PKG}/.git
-R CMD build ${PKG} --no-manual ${BUILD_ARGS}
+rm -Rf ${REPO}/.git
+R CMD build ${REPO} --no-manual ${BUILD_ARGS}
 
 # Confirm that file exists and exit
-test -f "$PKG_SOURCE"
-echo ::set-output name=PKG_SOURCE::$PKG_SOURCE
+test -f "$SOURCEPKG"
+echo ::set-output name=PACKAGE::$PACKAGE
+echo ::set-output name=SOURCEPKG::$SOURCEPKG
+echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP

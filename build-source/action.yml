@@ -5,8 +5,12 @@ inputs:
     description: 'Git URL where to clone from'
     required: true
 outputs:
-  PKG_SOURCE:
+  PACKAGE:
+    description: 'Name of the package'  
+  SOURCEPKG:
     description: 'Filename of the source package'
+  COMMIT_TIMESTAMP:
+    description: 'Time of the last commit'
 runs:
   using: 'docker'
   image: 'Dockerfile'
