@@ -1,0 +1,14 @@
+name: 'Create R source package'
+description: 'Creates source package from git url'
+inputs:
+  url:
+    description: 'Git URL where to clone from'
+    required: true
+outputs:
+  PKG_SOURCE:
+    description: 'Filename of the source package'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.url }}
