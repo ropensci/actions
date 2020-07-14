@@ -15,7 +15,6 @@ echo 'RGL_USE_NULL=TRUE' >> ~/.Renviron
 echo '_R_CHECK_FORCE_SUGGESTS_=FALSE' >> ~/.Renviron
 echo '_R_CHECK_CRAN_INCOMING_=FALSE' >> ~/.Renviron
 echo '_R_CHECK_CRAN_INCOMING_REMOTE_=FALSE' >> ~/.Renviron
-echo 'R_COMPILE_AND_INSTALL_PACKAGES=never' >> ~/.Renviron
 
 # Get the package
 git clone --depth 1 "$1"
@@ -40,5 +39,6 @@ R CMD build ${REPO} --no-manual ${BUILD_ARGS}
 # Confirm that file exists and exit
 test -f "$SOURCEPKG"
 echo ::set-output name=PACKAGE::$PACKAGE
+echo ::set-output name=VERSION::$VERSION
 echo ::set-output name=SOURCEPKG::$SOURCEPKG
 echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP
