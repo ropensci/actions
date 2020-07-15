@@ -17,8 +17,8 @@ echo '_R_CHECK_CRAN_INCOMING_=FALSE' >> ~/.Renviron
 echo '_R_CHECK_CRAN_INCOMING_REMOTE_=FALSE' >> ~/.Renviron
 
 # Get the package
-git clone --depth 1 "$1"
 REPO=$(basename $1)
+git clone --depth 1 "$1" "${REPO}"
 COMMIT_TIMESTAMP="$(git --git-dir=${REPO}/.git log -1 --format=%ct)"
 DISTRO="$(lsb_release -sc)"
 PACKAGE=$(grep '^Package:' "${REPO}/DESCRIPTION" | sed 's/^Package://')
