@@ -33,9 +33,9 @@ BINARYPKG="${PKG_VERSION}_R_x86_64-pc-linux-gnu.tar.gz"
 Rscript -e "install.packages('remotes')"
 Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
 
-# Build source package
+# Build source package. Try vignettes, but build without otherwise.
 rm -Rf ${REPO}/.git
-R CMD build ${REPO} --no-manual ${BUILD_ARGS}
+R CMD build ${REPO} --no-manual ${BUILD_ARGS} || R CMD build ${REPO} --no-manual --no-build-vignettes ${BUILD_ARGS}
 
 # Confirm that file exists and exit
 test -f "$SOURCEPKG"
