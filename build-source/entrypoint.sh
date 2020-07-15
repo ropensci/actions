@@ -31,7 +31,7 @@ BINARYPKG="${PKG_VERSION}_R_x86_64-pc-linux-gnu.tar.gz"
 
 # Get dependencies
 Rscript -e "install.packages('remotes')"
-Rscript -e "install.packages('jeroen/makeconf')"
+Rscript -e "remotes::install_github('jeroen/makeconf')"
 Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
 
 # Build source package. Try vignettes, but build without otherwise.
