@@ -20,6 +20,7 @@ echo '_R_CHECK_CRAN_INCOMING_REMOTE_=FALSE' >> ~/.Renviron
 git clone --depth 1 "$1"
 REPO=$(basename $1)
 COMMIT_TIMESTAMP="$(git --git-dir=${REPO}/.git log -1 --format=%ct)"
+DISTRO="$(lsb_release -sc)"
 PACKAGE=$(grep '^Package:' "${REPO}/DESCRIPTION" | sed 's/^Package://')
 VERSION=$(grep '^Version:' "${REPO}/DESCRIPTION" | sed 's/^Version://')
 PACKAGE=$(echo -n "${PACKAGE//[[:space:]]/}")
@@ -38,6 +39,7 @@ R CMD build ${REPO} --no-manual ${BUILD_ARGS}
 
 # Confirm that file exists and exit
 test -f "$SOURCEPKG"
+echo ::set-output name=DISTRO::$DISTRO
 echo ::set-output name=PACKAGE::$PACKAGE
 echo ::set-output name=VERSION::$VERSION
 echo ::set-output name=SOURCEPKG::$SOURCEPKG
