@@ -46,6 +46,7 @@ echo ::set-output name=SOURCEPKG::$SOURCEPKG
 echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP
 
 # Confirm that package can be installed on Linux
+# For now we don't do a full build to speed up building of subsequent Win/Mac binaries
 test -f "$SOURCEPKG"
 R CMD INSTALL "$SOURCEPKG"
 SYSDEPS=$(Rscript -e "cat(paste(makeconf::dpkg_sysdeps('$PACKAGE'), collapse = ', '))")
