@@ -38,17 +38,15 @@ Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(depende
 rm -Rf ${REPO}/.git
 R CMD build ${REPO} --no-manual ${BUILD_ARGS} || R CMD build ${REPO} --no-manual --no-build-vignettes ${BUILD_ARGS}
 
-# Confirm that package can be installed on Linux
-test -f "$SOURCEPKG"
-R CMD INSTALL "$SOURCEPKG"
-
-# Find sysdeps
-SYSDEPS=$(Rscript -e "cat(paste(makeconf::dpkg_sysdeps('$PACKAGE'), collapse = ', '))")
-
 # Set output values
 echo ::set-output name=DISTRO::$DISTRO
 echo ::set-output name=PACKAGE::$PACKAGE
 echo ::set-output name=VERSION::$VERSION
-echo ::set-output name=SYSDEPS::$SYSDEPS
 echo ::set-output name=SOURCEPKG::$SOURCEPKG
 echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP
+
+# Confirm that package can be installed on Linux
+test -f "$SOURCEPKG"
+R CMD INSTALL "$SOURCEPKG"
+SYSDEPS=$(Rscript -e "cat(paste(makeconf::dpkg_sysdeps('$PACKAGE'), collapse = ', '))")
+echo ::set-output name=SYSDEPS::$SYSDEPS
