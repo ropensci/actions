@@ -35,6 +35,7 @@ Rscript -e "remotes::install_github('jeroen/makeconf')"
 Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
 
 # Build source package. Try vignettes, but build without otherwise.
+# R is weird like that, it should be possible to build the package even if there is a documentation bug.
 rm -Rf ${REPO}/.git
 R CMD build ${REPO} --no-manual ${BUILD_ARGS} || R CMD build ${REPO} --no-manual --no-build-vignettes ${BUILD_ARGS}
 
@@ -49,5 +50,5 @@ echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP
 # For now we don't do a full build to speed up building of subsequent Win/Mac binaries
 test -f "$SOURCEPKG"
 R CMD INSTALL "$SOURCEPKG"
-SYSDEPS=$(Rscript -e "cat(paste(makeconf::dpkg_sysdeps('$PACKAGE'), collapse = ', '))")
+SYSDEPS=$(Rscript -e "cat(makeconf::dpkg_sysdeps_string('$PACKAGE'))")
 echo ::set-output name=SYSDEPS::$SYSDEPS
