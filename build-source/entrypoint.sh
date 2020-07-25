@@ -31,7 +31,7 @@ BINARYPKG="${PKG_VERSION}_R_x86_64-pc-linux-gnu.tar.gz"
 
 # Get dependencies
 Rscript -e "install.packages('remotes')"
-Rscript -e "remotes::install_github('jeroen/makeconf')"
+Rscript -e "remotes::install_github('jeroen/maketools')"
 Rscript -e "setwd('$REPO'); install.packages(remotes::local_package_deps(dependencies=TRUE))"
 
 # Build source package. Try vignettes, but build without otherwise.
@@ -50,5 +50,5 @@ echo ::set-output name=COMMIT_TIMESTAMP::$COMMIT_TIMESTAMP
 # For now we don't do a full build to speed up building of subsequent Win/Mac binaries
 test -f "$SOURCEPKG"
 R CMD INSTALL "$SOURCEPKG"
-SYSDEPS=$(Rscript -e "cat(makeconf::package_sysdeps_string('$PACKAGE'))")
+SYSDEPS=$(Rscript -e "cat(maketools::package_sysdeps_string('$PACKAGE'))")
 echo ::set-output name=SYSDEPS::$SYSDEPS
