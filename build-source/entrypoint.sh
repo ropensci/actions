@@ -58,3 +58,6 @@ RJAVA=$(R -e "library('$PACKAGE'); sessionInfo()" | grep "rJava")
 if [ "$RJAVA" ]; then
 echo ::set-output name=NEED_RJAVA::true
 fi
+
+echo "Build complete!"
+exit 0
