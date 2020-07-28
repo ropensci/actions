@@ -52,3 +52,9 @@ test -f "$SOURCEPKG"
 R CMD INSTALL "$SOURCEPKG"
 SYSDEPS=$(Rscript -e "cat(maketools::package_sysdeps_string('$PACKAGE'))")
 echo ::set-output name=SYSDEPS::$SYSDEPS
+
+# Test if Java is needed to load
+RJAVA=$(R -e "library('$PACKAGE'); sessionInfo()" | grep "rJava")
+if [ "$RJAVA" ]; then
+echo ::set-output name=NEED_RJAVA::true
+fi
