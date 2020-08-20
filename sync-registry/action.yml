@@ -1,0 +1,15 @@
+name: 'Sync with registry'
+description: 'Synchronize monorepo with registry'
+inputs:
+  monorepo_url:
+    description: 'Git URL with monorepo'
+    required: true
+  github_pat:
+    description: 'Token'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Actionfile'
+  args:
+    - ${{ inputs.monorepo_url }}
+    - ${{ inputs.github_pat }}

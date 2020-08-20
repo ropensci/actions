@@ -1,0 +1,5 @@
+FROM ropensci/sync-registry
+
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
