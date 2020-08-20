@@ -9,3 +9,7 @@ RUN \
 
 RUN \
 	R -e 'install.packages("remotes"); remotes::install_github("jeroen/universe")'
+
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
